@@ -1,4 +1,9 @@
 body {
+    background: url("https://iilm.edu.in/uploads/all/756/conversions/4_EXPLORE-CAMPUS-LIFE-full.webp")
+                center / cover no-repeat fixed !important;
+}
+
+body {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -51,4 +56,5 @@ button {
     border: none;
     cursor: pointer;
 }
+
 
