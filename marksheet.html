@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marksheet</title>
+</head>
+<body>
+
+<h1>Marksheet</h1>
+<h2 id="studentName"></h2>
+
+<label>Select Semester:</label>
+<select id="semesterSelect" onchange="loadMarks()">
+    <option value="">All</option>
+    <option value="1">Semester 1</option>
+    <option value="2">Semester 2</option>
+    <option value="3">Semester 3</option>
+    <option value="4">Semester 4</option>
+    <option value="5">Semester 5</option>
+    <option value="6">Semester 6</option>
+    <option value="7">Semester 7</option>
+    <option value="8">Semester 8</option>
+</select>
+
+<br><br>
+
+<table border="1" id="marksTable">
+    <tr>
+        <th>Semester</th>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>Grade</th>
+    </tr>
+</table>
+<h3 id="sgpaDisplay"></h3>
+<h3 id="backlogWarning" style="color:red;"></h3>
+
+
+
+<br>
+<button onclick="goBack()">Back to Dashboard</button>
+
+<script>
+const student = JSON.parse(localStorage.getItem("student"));
+
+if (!student) {
+    window.location.href = "index.html";
+}
+
+document.getElementById("studentName").innerText =
+    "Student: " + student.name;
+
+function loadMarks() {
+    const semester = document.getElementById("semesterSelect").value;
+    let url = `http://localhost:3000/marks/${student.student_id}`;
+
+    if (semester) {
+        url += `?semester=${semester}`;
+    }
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        const table = document.getElementById("marksTable");
+        table.innerHTML = `
+            <tr>
+                <th>Semester</th>
+                <th>Subject</th>
+                <th>Marks</th>
+                <th>Grade</th>
+            </tr>
+        `;
+
+        if (data.length === 0) {
+            table.innerHTML += `<tr><td colspan="4">No records found</td></tr>`;
+            return;
+        }
+
+        data.forEach(row => {
+    const tr = document.createElement("tr");
+
+    // Backlog condition
+    const isFail = row.grade === 'F' || row.marks < 40;
+
+    tr.innerHTML = `
+        <td>${row.semester}</td>
+        <td>${row.subject_name}</td>
+        <td>${row.marks}</td>
+        <td>${row.grade}</td>
+    `;
+
+    if (isFail) {
+        tr.style.color = "red";
+        tr.style.fontWeight = "bold";
+    }
+
+    table.appendChild(tr);
+});
+
+
+        // 🎓 Fetch SGPA if a semester is selected
+        if (semester) {
+            fetch(`http://localhost:3000/sgpa/${student.student_id}/${semester}`)
+            .then(res => res.json())
+            .then(result => {
+                document.getElementById("sgpaDisplay").innerText =
+                    "SGPA: " + result.sgpa;
+            });
+        } else {
+            document.getElementById("sgpaDisplay").innerText = "";
+        }
+    });
+}
+
+
+// Load all marks initially
+loadMarks();
+
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+</script>
+
+
+</body>
+</html>

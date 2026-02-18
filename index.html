@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="login-container">
+    <h2>B.Tech CSE Student Portal</h2>
+
+    <!-- ❗ Prevent default form redirect -->
+    <form onsubmit="login(event)">
+        <input type="text" id="student_id" placeholder="Student ID" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="error" style="color:red;"></p>
+</div>
+
+<script>
+function login(event) {
+    event.preventDefault(); // ❗ stop form from redirecting
+
+    const id = document.getElementById("student_id").value;
+    const pass = document.getElementById("password").value;
+
+    fetch("http://localhost:3000/login", {   // ✅ correct port
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            student_id: id,
+            password: pass
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // store student data
+            localStorage.setItem("student", JSON.stringify(data.student));
+
+            // redirect to dashboard
+            window.location.href = "dashboard.html";
+        } else {
+            document.getElementById("error").innerText = "Invalid login credentials";
+        }
+    })
+    .catch(err => console.error(err));
+}
+</script>
+
+</body>
+</html>

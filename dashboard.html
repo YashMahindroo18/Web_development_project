@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard</title>
+</head>
+<body>
+
+<h1>Student Dashboard</h1>
+<h2 id="welcome"></h2>
+<h3 id="yearDisplay"></h3>
+
+<hr>
+
+<button onclick="goTo('marksheet.html')">View Marksheet</button>
+<button onclick="goTo('schedule.html')">Class Schedule</button>
+<button onclick="goTo('profile.html')">Student Profile</button>
+<button onclick="logout()">Logout</button>
+
+<script>
+const student = JSON.parse(localStorage.getItem("student"));
+
+// 🔐 Redirect if not logged in
+if (!student) {
+    window.location.href = "index.html";
+} else {
+    document.getElementById("welcome").innerText =
+        "Hello, " + student.name;
+
+    // 🎓 Fetch auto-detected year
+    fetch(`http://localhost:3000/year/${student.student_id}`)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("yearDisplay").innerText =
+            "Current Year: " + data.year + " (Sem " + data.maxSemester + ")";
+    })
+    .catch(err => console.error("Year fetch error:", err));
+}
+
+// Navigation
+function goTo(page) {
+    window.location.href = page;
+}
+
+// Logout
+function logout() {
+    localStorage.removeItem("student");
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

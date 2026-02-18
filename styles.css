@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+
+    /* Background image */
+    background: url("../images/student_portal.jpg") no-repeat center center fixed;
+    background-size: cover;
+
+    /* Overlay color for transparency effect */
+    position: relative;
+}
+
+/* Transparent overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4); /* adjust transparency here */
+    z-index: -1;
+}
+
+/* Login box */
+.login-container {
+    width: 300px;
+    margin: 120px auto;
+    padding: 20px;
+
+    /* Glass/transparent effect */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    text-align: center;
+    border-radius: 8px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
