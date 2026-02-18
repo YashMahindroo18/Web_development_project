@@ -1,13 +1,17 @@
 body {
-    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    /* Background image */
-    background: url("../images/student_portal.jpg") no-repeat center center fixed;
+    background-image: url("https://iilm.edu.in/uploads/all/756/conversions/4_EXPLORE-CAMPUS-LIFE-full.webp");
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-    /* Overlay color for transparency effect */
-    position: relative;
+    color: #333;
 }
+
 
 /* Transparent overlay */
 body::before {
@@ -47,3 +51,4 @@ button {
     border: none;
     cursor: pointer;
 }
+
